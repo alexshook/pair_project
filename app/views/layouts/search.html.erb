@@ -8,9 +8,10 @@
 
 <style>
 	body {
-		background-image:url("<%=@background%>");
+		background-image:url("<%=@gif_url%>");
 		font-family: "Comic Sans MS", cursive, sans-serif;
 		color: rainbow;
+    background-size: cover;
 }
 
   body h1 {
@@ -30,14 +31,7 @@
 </head>
 <body>
 
-<div align="center" class="rainbow">
-	<h1>TWO APIS, ONE FORM</h1>
-  <p>gifortunity?</p>
-</div>
-
-<div align="center">
-  <%= yield %>
-</div>
+<%= yield %>
 
 </body>
 </html>
