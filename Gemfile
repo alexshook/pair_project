@@ -44,4 +44,5 @@ end
 
 gem 'puma'
 gem 'soundcloud'
-
+gem 'httparty'
+gem 'pry-rails'
