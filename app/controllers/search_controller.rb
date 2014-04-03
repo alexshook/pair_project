@@ -61,7 +61,13 @@ class SearchController < ApplicationController
     uri = song["uri"]
     uri = uri.gsub(/http:\/\//, '')
 
-    return uri
+      if uri.count == 0
+        @gif_url = 'http://media0.giphy.com/media/CF2cg4YbWsYQo/giphy.gif'
+        @artist_pretty ='nope... so DIPLO!'
+        @soundcloud_uri = 'api.soundcloud.com/tracks/83308020'
+      else
+        return uri
+      end
      rescue
        "Soundcloud Link Not Available"
      end
