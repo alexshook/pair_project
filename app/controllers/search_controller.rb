@@ -11,30 +11,19 @@ class SearchController < ApplicationController
       redirect_to :back
     else
       artist_search = HTTParty.get("http://api.giphy.com/v1/gifs/search?q=#{@artist}&api_key=dc6zaTOxFJmzC")
-      @gif_url = artist_search["data"].sample["images"]["original"]["url"]
 
-      @artist_pretty = @artist.gsub('+', ' ').titleize
-      @soundcloud_uri = soundcloud_links(params[:artist])
-
-      render :layout => "search"
-
-      #echonest mood
-      # @mood = params[:mood].gsub(' ', '+')
-      # mood_search = HTTParty.get("http://developer.echonest.com/api/v4/song/search?api_key=8RYOJF4YSDMOQNMZW&format=json&mood=#{@mood}")["response"]["songs"]
-
-      # #returns a new array of artist names and songs
-      # mood_search.map do |song|
-      #   [song["artist_name"], song["title"]]
-      # end
-
-      # #match @artist to song["artist_name"]
-      # matches = []
-      # if song["artist_name"].include?(@artist)
-      #   matches << song["artist_name"]
-      # end
-
-  # track = client.get('/resolve', :url => track_url)
+      #### this if should eventually be replaced by hall_of_fame methode
+      if artist_search["data"].count == 0
+        @gif_url = 'http://media0.giphy.com/media/CF2cg4YbWsYQo/giphy.gif'
+        @artist_pretty ='nope... so DIPLO!'
+        @soundcloud_uri = 'api.soundcloud.com/tracks/83308020'
+      else
+        @gif_url = artist_search["data"].sample["images"]["original"]["url"]
+        @artist_pretty = @artist.gsub('+', ' ').titleize
+        @soundcloud_uri = soundcloud_links(params[:artist])
+      end
     end
+    render :layout => "search"
   end
 
   def background_picker
@@ -48,12 +37,10 @@ class SearchController < ApplicationController
     tracks = []
     results[:collection].each do |result|
       if result["kind"] == "track" && result["duration"] < 450000
-        tracks << result
+          tracks << result
+        end
       end
-    end
-
     final_results = []
-
     tracks.each do |track|
       if track["title"].downcase.include?(search.downcase) && track["title"].downcase.start_with?(search.downcase)
         final_results << track
@@ -61,16 +48,16 @@ class SearchController < ApplicationController
     end
 
     song = final_results.sample
-
     uri = song["uri"]
     uri = uri.gsub(/http:\/\//, '')
-
     return uri
-     rescue
-       "Soundcloud Link Not Available"
-     end
+    rescue
+      "Soundcloud Link Not Available"
+    end
   end
-
 end
+
+
+
 
 
