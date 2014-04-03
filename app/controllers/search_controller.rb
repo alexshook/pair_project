@@ -21,22 +21,28 @@ class SearchController < ApplicationController
 
   def soundcloud_links(search)
     # begin
-    tracks = SoundCloud.new(:client_id => "476bff90d2af3f775a10bf5bc1f82928").get('/search', :q => search)
-    results = tracks[:collection][0..30]
-    # results.select{ |e| e["duration"] < 450000 }
-
-    final_results = []
-    results.each do |song|
-      if song["title"].include?(search)
-        final_results << song
+    results = SoundCloud.new(:client_id => "476bff90d2af3f775a10bf5bc1f82928").get('/search', :q => search)
+    tracks = []
+    results[:collection].each do |result|
+      if result["kind"] == "track"
+        tracks << result
       end
     end
 
-    # # song = final_results.sample
+    final_results = []
 
-    # uri = song["uri"]
+    tracks.each do |track|
+      if track["title"].downcase.include?(search.downcase)
+        final_results << track
+      end
+    end
 
-    return final_results
+  
+    song = final_results.sample
+
+    uri = song["uri"]
+
+    return uri
      # rescue
      #   "Soundcloud Link Not Available"
      # end
