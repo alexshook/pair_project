@@ -23,6 +23,12 @@ class SearchController < ApplicationController
       [song["artist_name"], song["title"]]
     end
 
+    #match @artist to song["artist_name"]
+    matches = []
+    if song["artist_name"].include?(@artist)
+      matches << song["artist_name"]
+    end
+
 # track = client.get('/resolve', :url => track_url)
   end
 
