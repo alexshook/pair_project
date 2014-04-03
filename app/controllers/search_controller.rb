@@ -8,7 +8,7 @@ class SearchController < ApplicationController
     @artist = params[:artist].gsub(' ', '+')
     artist_search = HTTParty.get("http://api.giphy.com/v1/gifs/search?q=#{@artist}&api_key=dc6zaTOxFJmzC")
     @gif_url = artist_search["data"].sample["images"]["original"]["url"]
-    @artist_pretty = @artist.gsub('+', ' ')
+    @artist_pretty = @artist.gsub('+', ' ').titleize
   end
 
   def background_picker
