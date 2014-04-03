@@ -2,6 +2,7 @@ class SearchController < ApplicationController
 
   def index
   	@background = background_picker
+    render :layout => "application"
   end
 
   def show
@@ -9,6 +10,7 @@ class SearchController < ApplicationController
     artist_search = HTTParty.get("http://api.giphy.com/v1/gifs/search?q=#{@artist}&api_key=dc6zaTOxFJmzC")
     @gif_url = artist_search["data"].sample["images"]["original"]["url"]
     @artist_pretty = @artist.gsub('+', ' ')
+    render :layout => "search"
   end
 
   def background_picker
