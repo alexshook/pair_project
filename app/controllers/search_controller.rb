@@ -16,19 +16,19 @@ class SearchController < ApplicationController
     render :layout => "search"
 
     #echonest mood
-    @mood = params[:mood].gsub(' ', '+')
-    mood_search = HTTParty.get("http://developer.echonest.com/api/v4/song/search?api_key=8RYOJF4YSDMOQNMZW&format=json&mood=#{@mood}")["response"]["songs"]
+    # @mood = params[:mood].gsub(' ', '+')
+    # mood_search = HTTParty.get("http://developer.echonest.com/api/v4/song/search?api_key=8RYOJF4YSDMOQNMZW&format=json&mood=#{@mood}")["response"]["songs"]
 
-    #returns a new array of artist names and songs
-    mood_search.map do |song|
-      [song["artist_name"], song["title"]]
-    end
+    # #returns a new array of artist names and songs
+    # mood_search.map do |song|
+    #   [song["artist_name"], song["title"]]
+    # end
 
-    #match @artist to song["artist_name"]
-    matches = []
-    if song["artist_name"].include?(@artist)
-      matches << song["artist_name"]
-    end
+    # #match @artist to song["artist_name"]
+    # matches = []
+    # if song["artist_name"].include?(@artist)
+    #   matches << song["artist_name"]
+    # end
 
 # track = client.get('/resolve', :url => track_url)
   end
