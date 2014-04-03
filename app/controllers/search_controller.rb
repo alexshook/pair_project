@@ -9,6 +9,15 @@ class SearchController < ApplicationController
     artist_search = HTTParty.get("http://api.giphy.com/v1/gifs/search?q=#{@artist}&api_key=dc6zaTOxFJmzC")
     @gif_url = artist_search["data"].sample["images"]["original"]["url"]
     @artist_pretty = @artist.gsub('+', ' ').titleize
+
+    #echonest mood
+    @mood = params[:mood].gsub(' ', '+')
+    #errors on type = mood
+    mood_search = HTTParty.get("http://developer.echonest.com/api/v4/artist/list_terms?api_key=8RYOJF4YSDMOQNMZW&format=json&name=#{@artist}&type=mood")
+
+# track = client.get('/resolve', :url => track_url)
+
+
   end
 
   def background_picker
