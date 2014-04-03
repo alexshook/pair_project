@@ -46,3 +46,6 @@ gem 'puma'
 gem 'soundcloud'
 gem 'httparty'
 gem 'pry-rails'
+
+gem 'rails_12factor', group: :production
+ruby "2.1.0"
