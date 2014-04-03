@@ -6,7 +6,10 @@ class SearchController < ApplicationController
   end
 
   def show
-      @artist = params[:artist].gsub(' ', '+')
+    @artist = params[:artist].gsub(' ', '+')
+    if @artist.length < 1
+      redirect_to :back
+    else
       artist_search = HTTParty.get("http://api.giphy.com/v1/gifs/search?q=#{@artist}&api_key=dc6zaTOxFJmzC")
       @gif_url = artist_search["data"].sample["images"]["original"]["url"]
 
@@ -31,6 +34,7 @@ class SearchController < ApplicationController
       # end
 
   # track = client.get('/resolve', :url => track_url)
+    end
   end
 
   def background_picker
