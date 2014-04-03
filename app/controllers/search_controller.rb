@@ -10,7 +10,7 @@ class SearchController < ApplicationController
     artist_search = HTTParty.get("http://api.giphy.com/v1/gifs/search?q=#{@artist}&api_key=dc6zaTOxFJmzC")
     @gif_url = artist_search["data"].sample["images"]["original"]["url"]
     @artist_pretty = @artist.gsub('+', ' ')
-    @test = soundcloud_links(@artist)
+    @soundcloud_uri = soundcloud_links(params[:artist])
     render :layout => "search"
   end
 
@@ -20,11 +20,11 @@ class SearchController < ApplicationController
 	end
 
   def soundcloud_links(search)
-    # begin
+    begin
     results = SoundCloud.new(:client_id => "476bff90d2af3f775a10bf5bc1f82928").get('/search', :q => search)
     tracks = []
     results[:collection].each do |result|
-      if result["kind"] == "track"
+      if result["kind"] == "track" 
         tracks << result
       end
     end
@@ -32,20 +32,20 @@ class SearchController < ApplicationController
     final_results = []
 
     tracks.each do |track|
-      if track["title"].downcase.include?(search.downcase)
+      if track["title"].downcase.include?(search.downcase) && track["title"].downcase.start_with?(search.downcase)
         final_results << track
       end
     end
-
   
     song = final_results.sample
 
     uri = song["uri"]
+    uri = uri.gsub(/http:\/\//, '')
 
     return uri
-     # rescue
-     #   "Soundcloud Link Not Available"
-     # end
+     rescue
+       "Soundcloud Link Not Available"
+     end
   end
 
 end
