@@ -16,6 +16,22 @@ class SearchController < ApplicationController
 		background = backgrounds_array.sample
 	end
 
+  def soundcloud_links(search)
+    begin
+    tracks = []
+    tracks << SoundCloud.new(:client_id => "476bff90d2af3f775a10bf5bc1f82928").get('/search', :q => search)
+    results = tracks[0][:collection][1..30]
+    #binding.pry
+    results.select{ |e| e["duration"] < 450000 }
+
+
+
+    return uri
+     rescue
+       "Soundcloud Link Not Available"
+     end
+  end
+
 end
 
 
