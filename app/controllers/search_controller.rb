@@ -6,31 +6,35 @@ class SearchController < ApplicationController
   end
 
   def show
-    @artist = params[:artist].gsub(' ', '+')
-    artist_search = HTTParty.get("http://api.giphy.com/v1/gifs/search?q=#{@artist}&api_key=dc6zaTOxFJmzC")
-    @gif_url = artist_search["data"].sample["images"]["original"]["url"]
+    if @artist == nil
+      redirect_to root_path
+    else
+      @artist = params[:artist].gsub(' ', '+')
+      artist_search = HTTParty.get("http://api.giphy.com/v1/gifs/search?q=#{@artist}&api_key=dc6zaTOxFJmzC")
+      @gif_url = artist_search["data"].sample["images"]["original"]["url"]
 
-    @artist_pretty = @artist.gsub('+', ' ').titleize
-    @soundcloud_uri = soundcloud_links(params[:artist])
+      @artist_pretty = @artist.gsub('+', ' ').titleize
+      @soundcloud_uri = soundcloud_links(params[:artist])
 
-    render :layout => "search"
+      render :layout => "search"
 
-    #echonest mood
-    # @mood = params[:mood].gsub(' ', '+')
-    # mood_search = HTTParty.get("http://developer.echonest.com/api/v4/song/search?api_key=8RYOJF4YSDMOQNMZW&format=json&mood=#{@mood}")["response"]["songs"]
+      #echonest mood
+      # @mood = params[:mood].gsub(' ', '+')
+      # mood_search = HTTParty.get("http://developer.echonest.com/api/v4/song/search?api_key=8RYOJF4YSDMOQNMZW&format=json&mood=#{@mood}")["response"]["songs"]
 
-    # #returns a new array of artist names and songs
-    # mood_search.map do |song|
-    #   [song["artist_name"], song["title"]]
-    # end
+      # #returns a new array of artist names and songs
+      # mood_search.map do |song|
+      #   [song["artist_name"], song["title"]]
+      # end
 
-    # #match @artist to song["artist_name"]
-    # matches = []
-    # if song["artist_name"].include?(@artist)
-    #   matches << song["artist_name"]
-    # end
+      # #match @artist to song["artist_name"]
+      # matches = []
+      # if song["artist_name"].include?(@artist)
+      #   matches << song["artist_name"]
+      # end
 
-# track = client.get('/resolve', :url => track_url)
+  # track = client.get('/resolve', :url => track_url)
+    end
   end
 
   def background_picker
