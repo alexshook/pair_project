@@ -8,7 +8,7 @@ class SearchController < ApplicationController
   def show
     @artist = params[:artist].gsub(' ', '+')
     if @artist.length < 1
-      redirect_to :back
+      redirect_to :back and return
     else
       artist_search = HTTParty.get("http://api.giphy.com/v1/gifs/search?q=#{@artist}&api_key=dc6zaTOxFJmzC")
 
