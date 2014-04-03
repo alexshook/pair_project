@@ -10,8 +10,9 @@ class SearchController < ApplicationController
     artist_search = HTTParty.get("http://api.giphy.com/v1/gifs/search?q=#{@artist}&api_key=dc6zaTOxFJmzC")
     @gif_url = artist_search["data"].sample["images"]["original"]["url"]
 
-    @artist_pretty = @artist.gsub('+', ' ').titleize
-    @test = soundcloud_links(@artist)
+    @artist_pretty = @artist.gsub('+', ' ')
+    @soundcloud_uri = soundcloud_links(params[:artist])
+
     render :layout => "search"
 
     #echonest mood
@@ -38,26 +39,32 @@ class SearchController < ApplicationController
 	end
 
   def soundcloud_links(search)
-    # begin
-    tracks = SoundCloud.new(:client_id => "476bff90d2af3f775a10bf5bc1f82928").get('/search', :q => search)
-    results = tracks[:collection][0..30]
-    # results.select{ |e| e["duration"] < 450000 }
-
-    final_results = []
-    results.each do |song|
-      if song["title"].include?(search)
-        final_results << song
+    begin
+    results = SoundCloud.new(:client_id => "476bff90d2af3f775a10bf5bc1f82928").get('/search', :q => search)
+    tracks = []
+    results[:collection].each do |result|
+      if result["kind"] == "track"
+        tracks << result
       end
     end
 
-    # # song = final_results.sample
+    final_results = []
 
-    # uri = song["uri"]
+    tracks.each do |track|
+      if track["title"].downcase.include?(search.downcase) && track["title"].downcase.start_with?(search.downcase)
+        final_results << track
+      end
+    end
 
-    return final_results
-     # rescue
-     #   "Soundcloud Link Not Available"
-     # end
+    song = final_results.sample
+
+    uri = song["uri"]
+    uri = uri.gsub(/http:\/\//, '')
+
+    return uri
+     rescue
+       "Soundcloud Link Not Available"
+     end
   end
 
 end
