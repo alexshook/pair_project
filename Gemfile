@@ -51,6 +51,5 @@ group :development do
   gem 'dotenv-rails'
 end
 
-
 gem 'rails_12factor', group: :production
-ruby "2.1.2"
+ruby "2.1.0"
