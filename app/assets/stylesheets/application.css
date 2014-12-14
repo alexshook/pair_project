@@ -12,12 +12,6 @@
  *= require_tree .
  */
 
-body {
-    background-image:url("<%=@background%>");
-    font-family: "Comic Sans MS", cursive, sans-serif;
-    color: rainbow;
-}
-
 body h1 {
   font-size: 80px;
 }
